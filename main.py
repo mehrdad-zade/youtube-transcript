@@ -3,6 +3,8 @@ import sys
 import subprocess
 import whisper
 from pathlib import Path
+import tkinter as tk
+from tkinter import simpledialog, messagebox
 
 def download_audio(youtube_url, output_dir="downloads"):
     """
@@ -45,8 +47,21 @@ def transcribe_audio(audio_path):
         print("Error during transcription:", e)
         return None
 
+def get_youtube_url():
+    """
+    Display a UI to get the YouTube URL.
+    """
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+    youtube_url = simpledialog.askstring("YouTube URL", "Enter the YouTube URL:")
+    if not youtube_url:
+        messagebox.showwarning("Input Error", "No YouTube URL was provided.")
+        sys.exit(1)
+    return youtube_url
+
 def main():
-    youtube_url = "https://www.youtube.com/watch?v=BWGl3TIO00A"
+    youtube_url = get_youtube_url()
+
     print("Downloading audio...")
     audio_file = download_audio(youtube_url)
 
@@ -73,3 +88,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
